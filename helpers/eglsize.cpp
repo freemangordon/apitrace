@@ -100,10 +100,40 @@ detect_size(int *width_ret, int *height_ret)
     return 0;
 }
 
-/* XXX */
-static inline bool
+static bool
 can_unpack_subimage(void) {
-    return false;
+    static bool inited = false;
+    static bool supported = false;
+
+    if (!inited) {
+        const char *begin = reinterpret_cast<const char *>(_glGetString(GL_EXTENSIONS));
+
+        if (begin) {
+            do {
+                const char *end = begin;
+                char c = *end;
+
+                while (c != '\0' && c != ' ') {
+                    ++end;
+                    c = *end;
+                }
+
+                if (end != begin && !strncmp(begin, "GL_EXT_unpack_subimage", end - begin)) {
+                    supported = true;
+                    break;
+                }
+
+                if (c == '\0')
+                    break;
+
+                begin = end + 1;
+            } while(true);
+
+            inited = true;
+        }
+    }
+
+    return supported;
 }
 
 static void
