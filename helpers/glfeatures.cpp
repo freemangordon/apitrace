@@ -347,6 +347,7 @@ Features::load(const Profile & profile, const Extensions & ext)
     ARB_program_interface_query = ext.has("GL_ARB_program_interface_query");
 
     NV_read_depth_stencil = ES && ext.has("GL_NV_read_depth_stencil");
+    EXT_unpack_subimage = ES && ext.has("GL_EXT_unpack_subimage");
 
     if (profile.desktop()) {
         ARB_color_buffer_float = profile.versionGreaterOrEqual(3, 0) ||
